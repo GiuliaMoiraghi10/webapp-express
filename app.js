@@ -6,10 +6,16 @@ const port = 3000
 
 const notFound = require('./middlewares/notFound')
 const errorsHandler = require('./middlewares/errorsHandler')
+const cors = require('cors')
 
 const moviesRouter = require('./routers/moviesRouter')
 
 // console.log(process.env)
+
+// registro cors per ricevere chiamate al server da URL diverso
+app.use(cors({
+    origin: process.env.CORS_ORIGIN,
+}))
 
 // rendo visibile cartella public (con dentro img)
 app.use(express.static('public'))
