@@ -7,6 +7,8 @@ const port = 3000
 const notFound = require('./middlewares/notFound')
 const errorsHandler = require('./middlewares/errorsHandler')
 
+const moviesRouter = require('./routers/moviesRouter')
+
 // console.log(process.env)
 
 // rendo visibile cartella public (con dentro img)
@@ -17,6 +19,9 @@ app.use(express.static('public'))
 app.get('/', (req, res) => {
     res.send('Server is running')
 })
+
+// registro rotta movies '/api/movies'
+app.use('/api/movies', moviesRouter)
 
 
 // Middlewares --> DOPO rotta!
