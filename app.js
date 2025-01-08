@@ -7,6 +7,8 @@ const port = 3000
 const notFound = require('./middlewares/notFound')
 const errorsHandler = require('./middlewares/errorsHandler')
 
+// console.log(process.env)
+
 // rendo visibile cartella public (con dentro img)
 app.use(express.static('public'))
 
