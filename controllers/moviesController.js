@@ -7,6 +7,11 @@ function index(req, res) {
 
     connection.query(sql, (err, movies) => {
         if (err) return res.status(500).json({ message: err.message }) // se il valore è null, restituisce errore
+
+        movies.forEach((movie) => {
+            movie.image = `http://localhost:3000/img/${movie.image}` //recupero le immagini dal DB
+        })
+
         res.json(movies) // altrimenti restituisce json con i movies
     })
 }
