@@ -7,7 +7,7 @@ function index(req, res) {
 
     // aggiunta filtro
     if (req.query.search) {
-        sql + - ` WHERE title LIKE '%${req.query.search}%' OR author LIKE '%${req.query.search}%' OR abstract LIKE '%${req.query.search}%'`
+        sql + - ` WHERE title LIKE '%${req.query.search}%' OR director LIKE '%${req.query.search}%' OR abstract LIKE '%${req.query.search}%'`
     }
 
     connection.query(sql, (err, movies) => {
