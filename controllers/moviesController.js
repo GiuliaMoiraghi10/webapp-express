@@ -1,14 +1,20 @@
 const connection = require('../data/db')
 
 function index(req, res) {
-    // funzione che mostrerà tutti i movies
+    // funzione che mostrerà tutti i movies + media voti
     // restituisce un json
-    let sql = `SELECT * FROM movies`
+
+    let sql = `SELECT movies.*, AVG(vote) AS avg_vote
+                FROM movies
+                JOIN reviews
+                ON movies.id = reviews.movie_id`
 
     // aggiunta filtro
     if (req.query.search) {
-        sql + - ` WHERE title LIKE '%${req.query.search}%' OR director LIKE '%${req.query.search}%' OR abstract LIKE '%${req.query.search}%'`
+        sql += ` WHERE title LIKE '%${req.query.search}%' OR director LIKE '%${req.query.search}%' OR abstract LIKE '%${req.query.search}%'`
     }
+
+    sql += ` GROUP BY movies.id`
 
     connection.query(sql, (err, movies) => {
         if (err) return res.status(500).json({ message: err.message }) // se il valore è null, restituisce errore
@@ -32,7 +38,12 @@ function show(req, res) {
             message: 'Movie not found'
         })
 
-    const sql = `SELECT * FROM movies WHERE id = ?`
+    let sql = `SELECT movies.*, AVG(vote) AS avg_vote
+                FROM movies
+                JOIN reviews
+                ON movies.id = reviews.movie_id
+                WHERE movies.id = ?
+                GROUP BY movies.id`
 
     connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).json({ message: err.message })
