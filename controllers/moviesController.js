@@ -3,7 +3,12 @@ const connection = require('../data/db')
 function index(req, res) {
     // funzione che mostrerà tutti i movies
     // restituisce un json
-    const sql = `SELECT * FROM movies`
+    let sql = `SELECT * FROM movies`
+
+    // aggiunta filtro
+    if (req.query.search) {
+        sql + - ` WHERE title LIKE '%${req.query.search}%' OR author LIKE '%${req.query.search}%' OR abstract LIKE '%${req.query.search}%'`
+    }
 
     connection.query(sql, (err, movies) => {
         if (err) return res.status(500).json({ message: err.message }) // se il valore è null, restituisce errore
