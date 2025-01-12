@@ -55,6 +55,8 @@ function show(req, res) {
         // se non ci sono errori e se l'id cercato è > di 0 allora il primo elemento dell'array è l'id che stiamo cercando
         const movie = results[0]
 
+        movie.image = `http://localhost:3000/img/${movie.image}` //recupero le immagini dal DB
+
         const sql = `SELECT * FROM reviews WHERE movie_id = ?` // cerco le recensioni per id movie
 
         connection.query(sql, [id], (err, results) => {
