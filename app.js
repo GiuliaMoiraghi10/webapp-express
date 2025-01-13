@@ -17,6 +17,9 @@ app.use(cors({
     origin: process.env.CORS_ORIGIN,
 }))
 
+//body parser x leggere proprietà nel body da postman
+app.use(express.json())
+
 // rendo visibile cartella public (con dentro img)
 app.use(express.static('public'))
 
