@@ -69,4 +69,36 @@ function show(req, res) {
     })
 }
 
-module.exports = { index, show }
+function storeReview(req, res) {
+    const id = req.params.id
+
+    //recupero i parametri dal body
+    const { text, vote, name } = req.body
+    console.log(id, text, vote, name)
+
+    const voteInt = parseInt(vote) //converto stringa in numero
+
+    // validazione di nome e voto
+    if (
+        !name ||
+        !voteInt ||
+        isNaN(voteInt) ||
+        voteInt < 1 ||
+        voteInt > 5 ||
+        name.length > 255 ||
+        typeof name !== 'string'
+    ) {
+        return res.status(400).json({ message: 'Testo non valido' })
+    }
+
+    // creo Query INSERT TO x creare nuovi elementi nel DB
+    const sql = 'INSERT INTO reviews (text, name, vote, movie_id) VALUES (?, ?, ?, ?)'
+
+    connection.query(sql, [text, name, vote, movie_id], (err, results) => {
+        if (err) return res.status(500).json({ message: 'DB non funzionante' })
+        console.log(results)
+        res.status(201).json({ message: 'Recensione aggiunta', id: results.insertId })
+    })
+}
+
+module.exports = { index, show, storeReview }
