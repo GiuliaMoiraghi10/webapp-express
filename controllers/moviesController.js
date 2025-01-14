@@ -76,6 +76,8 @@ function storeReview(req, res) {
     const { text, vote, name } = req.body
     console.log(id, text, vote, name)
 
+    // res.json({message: 'ok'})
+
     const voteInt = parseInt(vote) //converto stringa in numero
 
     // validazione di nome e voto
@@ -85,7 +87,7 @@ function storeReview(req, res) {
         isNaN(voteInt) ||
         voteInt < 1 ||
         voteInt > 5 ||
-        name.length > 255 ||
+        name?.length > 255 ||
         typeof name !== 'string'
     ) {
         return res.status(400).json({ message: 'Testo non valido' })
@@ -94,7 +96,7 @@ function storeReview(req, res) {
     // creo Query INSERT TO x creare nuovi elementi nel DB
     const sql = 'INSERT INTO reviews (text, name, vote, movie_id) VALUES (?, ?, ?, ?)'
 
-    connection.query(sql, [text, name, vote, movie_id], (err, results) => {
+    connection.query(sql, [text, name, voteInt, id], (err, results) => {
         if (err) return res.status(500).json({ message: 'DB non funzionante' })
         console.log(results)
         res.status(201).json({ message: 'Recensione aggiunta', id: results.insertId })
